@@ -1,0 +1,63 @@
+<div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="flex justify-center">
+      <svg class="h-12 w-12 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+      </svg>
+    </div>
+    <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your account</h2>
+  </div>
+
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
+    <div class="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-6" }) do |f| %>
+        <div>
+          <%= f.label :email, class: "block text-sm font-medium leading-6 text-gray-900" %>
+          <div class="mt-1">
+            <%= f.email_field :email, autofocus: true, placeholder: "Enter email address", autocomplete: "email", required: true, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 p-3" %>
+          </div>
+        </div>
+
+        <div>
+          <%= f.label :password, class: "block text-sm font-medium leading-6 text-gray-900" %>
+          <div class="mt-1">
+            <%= f.password_field :password, placeholder: "Enter password", autocomplete: "current-password", required: true, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 p-3" %>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <%= f.check_box :remember_me, class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600" %>
+            <%= f.label :remember_me, class: "ml-3 block text-sm leading-6 text-gray-900" %>
+          </div>
+
+          <div class="text-sm leading-6">
+            <%= link_to "Forgot your password?", new_password_path(resource_name), class: "font-semibold text-blue-600 hover:text-blue-500" %>
+          </div>
+        </div>
+
+        <div>
+          <%= f.submit "Sign in", class: "flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" %>
+        </div>
+      <% end %>
+
+      <div class="mt-6">
+        <div class="relative">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-200"></div>
+          </div>
+          <div class="relative flex justify-center text-sm font-medium leading-6">
+            <span class="bg-white px-6 text-gray-900">Or</span>
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <p class="text-center text-sm text-gray-500">
+            Don't have an account?
+            <%= link_to "Sign up", new_registration_path(resource_name), class: "font-semibold leading-6 text-blue-600 hover:text-blue-500" %>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

@@ -1,0 +1,63 @@
+<div class="min-h-full">
+  <div class="py-10">
+    <header>
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between">
+          <h1 class="text-3xl font-bold leading-tight tracking-tight text-gray-900">Chatrooms</h1>
+          <%= link_to new_chatroom_path, class: "inline-flex items-center rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" do %>
+            <svg class="-ml-0.5 mr-1.5 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            New Chatroom
+          <% end %>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div class="px-4 py-8 sm:px-0">
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <% @chatrooms.each do |chatroom| %>
+              <div class="relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+                <div class="flex-1 p-6">
+                  <h3 class="text-lg font-semibold text-gray-900"><%= chatroom.name %></h3>
+                  <p class="mt-2 text-sm text-gray-500"><%= chatroom.description %></p>
+                  <div class="mt-4 flex items-center text-sm text-gray-500">
+                    <svg class="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                    <%= pluralize(chatroom.messages.count, 'message') %>
+                  </div>
+                </div>
+                <div class="border-t border-gray-200 bg-gray-50 px-6 py-4">
+                  <div class="flex items-center justify-between">
+                    <%= link_to chatroom_path(chatroom), class: "inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" do %>
+                      <svg class="-ml-0.5 mr-1.5 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                      </svg>
+                      Join Chat
+                    <% end %>
+                    <% if chatroom.respond_to?(:user) && current_user == chatroom.user %>
+                      <div class="flex items-center space-x-2">
+                        <%= link_to edit_chatroom_path(chatroom), class: "text-gray-400 hover:text-gray-500" do %>
+                          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          </svg>
+                        <% end %>
+                        <%= button_to chatroom_path(chatroom), method: :delete, class: "text-gray-400 hover:text-gray-500", form: { data: { turbo_confirm: "Are you sure?" } } do %>
+                          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                        <% end %>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

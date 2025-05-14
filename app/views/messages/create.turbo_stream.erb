@@ -1,0 +1,7 @@
+<%= turbo_stream.append "messages .space-y-4" do %>
+  <%= render partial: "messages/message", locals: { message: @message } %>
+<% end %>
+
+<%= turbo_stream.update "new_message" do %>
+  <%= render partial: "messages/form", locals: { chatroom: @chatroom, message: Message.new } %>
+<% end %> 

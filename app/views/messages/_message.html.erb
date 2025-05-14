@@ -1,0 +1,88 @@
+<% is_current_user = message.user_id == current_user_id %>
+
+<%= turbo_frame_tag dom_id(message) do %>
+  <div id="message_<%= message.id %>" class="flex <%= is_current_user ? 'justify-end' : 'justify-start' %> items-start space-x-3 group mt-4">
+    <% unless is_current_user %>
+      <div class="flex-shrink-0">
+        <% if message.user.avatar.attached? %>
+          <%= image_tag message.user.avatar, class: "h-10 w-10 rounded-full" %>
+        <% else %>
+          <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
+            <span class="text-gray-500 text-sm font-medium">
+              <%= message.user.email.first.upcase %>
+            </span>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+    
+    <div class="mt-2 max-w-[70%]">
+      <div class="flex items-center space-x-2 <%= is_current_user ? 'justify-end' : 'justify-start' %>">
+        <% unless is_current_user %>
+          <p class="text-sm font-medium text-gray-900">
+            <%= message.user.email %>
+          </p>
+        <% end %>
+        <span class="text-xs text-gray-500">
+          <%= message.created_at.strftime("%I:%M %p") %>
+        </span>
+      </div>
+      
+      <div class="mt-1 <%= is_current_user ? 'bg-blue-600 text-white' : 'bg-white text-gray-900' %> rounded-lg px-4 py-2 shadow-sm">
+        <% if message.media.attached? %>
+          <div class="space-y-2">
+            <% if message.media.content_type.start_with?('image/') %>
+              <div class="relative group">
+                <%= image_tag url_for(message.media), 
+                    class: "max-h-64 rounded-lg w-full object-contain bg-gray-50",
+                    loading: "lazy" %>
+                <%= link_to rails_blob_path(message.media, disposition: "attachment"), 
+                    class: "absolute top-2 right-2 bg-black bg-opacity-50 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity",
+                    target: "_blank" do %>
+                  <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                <% end %>
+              </div>
+            <% elsif message.media.content_type.start_with?('video/') %>
+              <div class="relative group">
+                <%= video_tag url_for(message.media), 
+                    controls: true, 
+                    class: "max-h-64 rounded-lg w-full",
+                    controlsList: "nodownload",
+                    preload: "metadata" %>
+                <%= link_to rails_blob_path(message.media, disposition: "attachment"), 
+                    class: "absolute top-2 right-2 bg-black bg-opacity-50 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity",
+                    target: "_blank" do %>
+                  <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                <% end %>
+              </div>
+            <% else %>
+              <div class="flex items-center space-x-2 p-2 bg-gray-100 rounded-lg group hover:bg-gray-200 transition-colors">
+                <svg class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                </svg>
+                <span class="text-sm text-gray-700 flex-1 truncate"><%= message.media.filename %></span>
+                <%= link_to rails_blob_path(message.media, disposition: "attachment"), 
+                    class: "text-blue-600 hover:text-blue-800 transition-colors",
+                    target: "_blank" do %>
+                  <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+        
+        <% if message.content.present? %>
+          <div class="<%= message.media.attached? ? 'mt-2' : '' %>">
+            <p class="whitespace-pre-wrap"><%= message.content %></p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %> 
